@@ -1,3 +1,15 @@
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
 
 allprojects {
     repositories {
@@ -5,6 +17,11 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 
 tasks.register("clean", Delete) {

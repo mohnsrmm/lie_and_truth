@@ -1,39 +1,29 @@
-// Apply plugins specific to the application module
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    // Reverting to the declarative plugin application as recommended by Flutter
-    id 'dev.flutter.flutter-gradle-plugin' // Re-added this line
-    id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
-}
-
-// Remove the Flutter SDK path loading and 'apply from' as it's no longer needed for plugin application
-// def localProperties = new Properties()
-// def localPropertiesFile = rootProject.file('local.properties')
-// if (localPropertiesFile.exists()) {
-//     localPropertiesFile.withReader('UTF-8') { reader ->
-//         localProperties.load(reader)
-//     }
-// }
-
-// The following lines for Flutter SDK path are removed as the plugin is applied declaratively
-// def flutterRoot = localProperties.getProperty('flutter.sdk')
-// if (flutterRoot == null) {
-//     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-// }
-// def flutterSdk = new File(flutterRoot)
-
-// This line is removed as the plugin is applied declaratively in the plugins block
-// apply from: "$flutterSdk.path/packages/flutter_tools/gradle/flutter.gradle"
-
-
-// Load local.properties for Flutter version code/name, this part is still needed
+// Load local.properties file, which typically contains Flutter SDK path and version info
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
+}
+
+// Get Flutter SDK path from local.properties
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+// Apply the Flutter plugin via its direct path from the Flutter SDK
+// This is the common and robust way to apply the Flutter plugin for the app module.
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+// Apply other plugins specific to the application module
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    // The 'dev.flutter.flutter-gradle-plugin' is applied via 'apply from' above.
+    // DO NOT include it here when using 'apply from'.
+    // id 'dev.flutter.flutter-gradle-plugin' // REMOVED THIS LINE
+    id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
 }
 
 // Get Flutter version code and name, with default values if not found

@@ -1,33 +1,36 @@
-name: Build Flutter Android App
+name: Build Flutter **Debug** APK
 
 on:
   push:
-    branches:
-      - main  # أو الفرع اللي انت بتشتغل عليه
+    branches: [ main ]   # أو أي فرع-اختبار تفضّله
 
 jobs:
   build:
-    name: Build APK
+    name: Build Debug APK
     runs-on: ubuntu-latest
 
     steps:
+      # 1-جلب الكود
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2-تنصيب Flutter (آخر نسخة مستقرة أو حدّد رقم النسخة)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'  # أو الإصدار اللي بتستخدمه
+          flutter-version: '3.22.0'   # عدّلها إذا أردت نسخة أخرى
 
+      # 3-جلب التبعيات
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      # 4-بناء APK **Debug**
+      - name: Build APK (debug)
+        run: flutter build apk --debug
 
-      - name: Upload APK
+      # 5-رفع الـ APK كـ Artifact
+      - name: Upload debug APK
         uses: actions/upload-artifact@v3
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-
+          name: app-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk

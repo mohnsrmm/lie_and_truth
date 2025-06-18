@@ -1,29 +1,44 @@
+// Define buildscript dependencies, which are required for Gradle itself
 buildscript {
+    // Define the Kotlin version as an extension property
     ext.kotlin_version = '1.9.0'
     repositories {
+        // Standard Google Maven repository
         google()
+        // Standard Maven Central repository
         mavenCentral()
     }
     dependencies {
+        // Android Gradle Plugin dependency
         classpath 'com.android.tools.build:gradle:7.4.2'
+        // Kotlin Gradle Plugin dependency
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Google Services plugin dependency (for Firebase integration)
         classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 
+// Configure repositories for all subprojects (e.g., app module)
 allprojects {
     repositories {
+        // Standard Google Maven repository
         google()
+        // Standard Maven Central repository
         mavenCentral()
+        // JitPack repository
         maven { url 'https://jitpack.io' }
     }
 }
 
+// Set the build directory for the root project
 rootProject.buildDir = '../build'
+
+// Set the build directory for all subprojects relative to the root build directory
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 
+// Register a clean task to delete the root project's build directory
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

@@ -3,13 +3,15 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    // The 'dev.flutter.flutter-gradle-plugin' is applied via 'apply from' below.
-    // DO NOT include it here when using 'apply from'.
-    // id 'dev.flutter.flutter-gradle-plugin' // Ensure this line remains commented out or removed if using apply from.
+    // Re-adding the declarative Flutter Gradle plugin application.
+    // This is the recommended way, and it should work now that settings.gradle is correctly configured.
+    id 'dev.flutter.flutter-gradle-plugin' // UNCOMMENTED/RE-ADDED THIS LINE
     id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
 }
 
-// Load local.properties file, which typically contains Flutter SDK path and version info
+// Remove the Flutter SDK path loading and 'apply from' as it's no longer needed for plugin application.
+// This block was causing the 'imperative apply' error.
+/*
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -18,16 +20,21 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-// Get Flutter SDK path from local.properties
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
-// Apply the Flutter plugin via its direct path from the Flutter SDK
-// This is the common and robust way to apply the Flutter plugin for the app module.
-// This 'apply from' statement can come after the plugins block.
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+*/
 
+// Load local.properties for Flutter version code/name. This part is still necessary.
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
 
 // Get Flutter version code and name, with default values if not found
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'

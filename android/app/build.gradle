@@ -1,3 +1,14 @@
+// Apply plugins specific to the application module.
+// The 'plugins {}' block MUST be at the very top of the build.gradle file.
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    // The 'dev.flutter.flutter-gradle-plugin' is applied via 'apply from' below.
+    // DO NOT include it here when using 'apply from'.
+    // id 'dev.flutter.flutter-gradle-plugin' // Ensure this line remains commented out or removed if using apply from.
+    id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
+}
+
 // Load local.properties file, which typically contains Flutter SDK path and version info
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -14,17 +25,9 @@ if (flutterRoot == null) {
 }
 // Apply the Flutter plugin via its direct path from the Flutter SDK
 // This is the common and robust way to apply the Flutter plugin for the app module.
+// This 'apply from' statement can come after the plugins block.
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-// Apply other plugins specific to the application module
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    // The 'dev.flutter.flutter-gradle-plugin' is applied via 'apply from' above.
-    // DO NOT include it here when using 'apply from'.
-    // id 'dev.flutter.flutter-gradle-plugin' // REMOVED THIS LINE
-    id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
-}
 
 // Get Flutter version code and name, with default values if not found
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'

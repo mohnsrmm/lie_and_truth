@@ -24,7 +24,9 @@ if (flutterRoot == null) {
 def flutterSdk = new File(flutterRoot)
 
 // Apply the Flutter plugin via its direct path from the Flutter SDK
-apply from: "$flutterSdk.dir/packages/flutter_tools/gradle/flutter.gradle"
+// Changed "$flutterSdk.dir" to "$flutterSdk.path" or just "$flutterSdk" for correct path access.
+// Using .path is explicit and safe.
+apply from: "$flutterSdk.path/packages/flutter_tools/gradle/flutter.gradle"
 
 // Get Flutter version code and name, with default values if not found
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'

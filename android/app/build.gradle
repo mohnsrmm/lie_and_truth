@@ -2,7 +2,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'dev.flutter.flutter-gradle-plugin'
+   apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 }
 
 def localProperties = new Properties()

@@ -2,12 +2,32 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    // The 'dev.flutter.flutter-gradle-plugin' is now applied via 'apply from' below
-    // id 'dev.flutter.flutter-gradle-plugin' // REMOVED THIS LINE
+    // Reverting to the declarative plugin application as recommended by Flutter
+    id 'dev.flutter.flutter-gradle-plugin' // Re-added this line
     id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
 }
 
-// Load local.properties file, which typically contains Flutter version codes/names
+// Remove the Flutter SDK path loading and 'apply from' as it's no longer needed for plugin application
+// def localProperties = new Properties()
+// def localPropertiesFile = rootProject.file('local.properties')
+// if (localPropertiesFile.exists()) {
+//     localPropertiesFile.withReader('UTF-8') { reader ->
+//         localProperties.load(reader)
+//     }
+// }
+
+// The following lines for Flutter SDK path are removed as the plugin is applied declaratively
+// def flutterRoot = localProperties.getProperty('flutter.sdk')
+// if (flutterRoot == null) {
+//     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+// }
+// def flutterSdk = new File(flutterRoot)
+
+// This line is removed as the plugin is applied declaratively in the plugins block
+// apply from: "$flutterSdk.path/packages/flutter_tools/gradle/flutter.gradle"
+
+
+// Load local.properties for Flutter version code/name, this part is still needed
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -15,18 +35,6 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
-
-// Get Flutter SDK path from local.properties
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-def flutterSdk = new File(flutterRoot)
-
-// Apply the Flutter plugin via its direct path from the Flutter SDK
-// Changed "$flutterSdk.dir" to "$flutterSdk.path" or just "$flutterSdk" for correct path access.
-// Using .path is explicit and safe.
-apply from: "$flutterSdk.path/packages/flutter_tools/gradle/flutter.gradle"
 
 // Get Flutter version code and name, with default values if not found
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'

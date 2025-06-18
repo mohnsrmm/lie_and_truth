@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdkVersion 34
-    ndkVersion "25.2.9519653" // أو احذفها إذا لم تُستخدم
+   ndkVersion flutter.ndkVersion // أو احذفها إذا لم تُستخدم
 
     defaultConfig {
         applicationId "com.nasr.Lieandtruth2"

@@ -1,26 +1,46 @@
+// Define the root project name
+rootProject.name = "lie_and_truth"
+
+// Include the 'app' module in the project
+include(":app")
+
+// Configure plugin management for the entire project
 pluginManagement {
     repositories {
+        // Standard Google Maven repository for Android artifacts
         google()
+        // Standard Maven Central repository
         mavenCentral()
+        // Gradle Plugin Portal for discovering plugins
         gradlePluginPortal()
+        // JitPack repository, often used for custom or experimental libraries
         maven { url 'https://jitpack.io' }
+        // The Flutter repository, crucial for finding the Flutter Gradle plugin
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
     }
     plugins {
+        // Apply Android Application plugin but defer its application for modules
         id "com.android.application" version "7.4.2" apply false
+        // Apply Kotlin Android plugin but defer its application for modules
         id "org.jetbrains.kotlin.android" version "1.9.0" apply false
+        // Apply Flutter Gradle plugin but defer its application for modules
         id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+        // Apply Google Services plugin (for Firebase) but defer its application for modules
         id "com.google.gms.google-services" version "4.3.15" apply false
     }
 }
 
+// Configure dependency resolution for all projects/modules
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS) // Enforce explicit repository definitions
     repositories {
+        // Standard Google Maven repository
         google()
+        // Standard Maven Central repository
         mavenCentral()
+        // JitPack repository
         maven { url 'https://jitpack.io' }
+        // Flutter's repository for dependencies
         maven { url "https://storage.googleapis.com/download.flutter.io" }
     }
 }
-
-rootProject.name = "lie_and_truth"
-include(":app")

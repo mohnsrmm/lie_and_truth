@@ -18,17 +18,17 @@ buildscript {
     }
 }
 
-// Configure repositories for all subprojects (e.g., app module)
+// The allprojects block for repositories is removed because repositories are now
+// configured globally in settings.gradle with repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+/*
 allprojects {
     repositories {
-        // Standard Google Maven repository
         google()
-        // Standard Maven Central repository
         mavenCentral()
-        // JitPack repository
         maven { url 'https://jitpack.io' }
     }
 }
+*/
 
 // Set the build directory for the root project
 rootProject.buildDir = '../build'

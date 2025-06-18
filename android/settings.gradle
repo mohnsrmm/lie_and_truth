@@ -1,46 +1,34 @@
-// Configure plugin management for the entire project
-pluginManagement {
-    repositories {
-        // Standard Google Maven repository for Android artifacts
-        google()
-        // Standard Maven Central repository
-        mavenCentral()
-        // Gradle Plugin Portal for discovering plugins
-        gradlePluginPortal()
-        // JitPack repository, often used for custom or experimental libraries
-        maven { url 'https://jitpack.io' }
-        // The Flutter repository, crucial for finding the Flutter Gradle plugin
-        maven { url 'https://storage.googleapis.com/download.flutter.io' }
+    // Configure plugin management for the entire project.
+    // This block MUST be at the very top of the settings.gradle file.
+    pluginManagement {
+        repositories {
+            // Standard Google Maven repository for Android artifacts
+            google()
+            // Standard Maven Central repository
+            mavenCentral()
+            // Gradle Plugin Portal for discovering plugins
+            gradlePluginPortal()
+            // Flutter's repository for the flutter-gradle-plugin
+            maven { url 'https://storage.googleapis.com/download.flutter.io' }
+        }
     }
-    plugins {
-        // Apply Android Application plugin but defer its application for modules
-        id "com.android.application" version "7.4.2" apply false
-        // Apply Kotlin Android plugin but defer its application for modules
-        id "org.jetbrains.kotlin.android" version "1.9.0" apply false
-        // Apply Flutter Gradle plugin but defer its application for modules
-        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
-        // Apply Google Services plugin (for Firebase) but defer its application for modules
-        id "com.google.gms.google-services" version "4.3.15" apply false
+
+    // Configure dependency resolution for all projects/modules.
+    // repositoriesMode.set(RepositoriesMode.PREFER_PROJECT) is often more flexible for Flutter projects,
+    // allowing project-level build.gradle files to define additional repositories.
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+        repositories {
+            google()
+            mavenCentral()
+            maven { url 'https://storage.googleapis.com/download.flutter.io' } // Also for other Flutter-related dependencies
+            maven { url 'https://jitpack.io' } // Include if other dependencies use JitPack
+        }
     }
-}
 
-// Configure dependency resolution for all projects/modules
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS) // Enforce explicit repository definitions
-    repositories {
-        // Standard Google Maven repository
-        google()
-        // Standard Maven Central repository
-        mavenCentral()
-        // JitPack repository
-        maven { url 'https://jitpack.io' }
-        // Flutter's repository for dependencies
-        maven { url "https://storage.googleapis.com/download.flutter.io" }
-    }
-}
+    // Define the root project name
+    rootProject.name = "lie_and_truth"
 
-// Define the root project name
-rootProject.name = "lie_and_truth"
-
-// Include the 'app' module in the project
-include(":app")
+    // Include the 'app' module in the project
+    include ':app'
+    

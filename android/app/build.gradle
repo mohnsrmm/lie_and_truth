@@ -3,29 +3,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    // Re-adding the declarative Flutter Gradle plugin application.
-    // This is the recommended way, and it should work now that settings.gradle is correctly configured.
-    id 'dev.flutter.flutter-gradle-plugin' // UNCOMMENTED/RE-ADDED THIS LINE
+    // Applying the Flutter Gradle plugin with its version, as required by Gradle.
+    id 'dev.flutter.flutter-gradle-plugin' version '1.0.0' // Added version '1.0.0' here
     id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
 }
-
-// Remove the Flutter SDK path loading and 'apply from' as it's no longer needed for plugin application.
-// This block was causing the 'imperative apply' error.
-/*
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-*/
 
 // Load local.properties for Flutter version code/name. This part is still necessary.
 def localProperties = new Properties()

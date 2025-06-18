@@ -1,69 +1,12 @@
-buildscript {
-    ext.kotlin_version = '1.9.0'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.15'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
-}
-
-rootProject.buildDir = '../build'
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
-}
-
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url 'https://jitpack.io' }
-        // Add the Flutter repository here to find the flutter-gradle-plugin
-        maven { url 'https://storage.googleapis.com/download.flutter.io' }
-    }
-    plugins {
-        id "com.android.application" version "7.4.2" apply false
-        id "org.jetbrains.kotlin.android" version "1.9.0" apply false
-        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
-        id "com.google.gms.google-services" version "4.3.15" apply false
-    }
-}
-
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://storage.googleapis.com/download.flutter.io" }
-    }
-}
-
-rootProject.name = "lie_and_truth"
-include(":app")
-
+// Apply plugins specific to the application module
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'dev.flutter.flutter-gradle-plugin'
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services' // Apply Google Services plugin for Firebase
 }
 
+// Load local.properties file, which typically contains Flutter version codes/names
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -72,42 +15,53 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+// Get Flutter version code and name, with default values if not found
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
 def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
 
+// Load keystore.properties file for signing configurations
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+// Android configuration block
 android {
+    // Compile using SDK version 34
     compileSdkVersion 34
 
+    // Default configuration for the application
     defaultConfig {
-        applicationId "com.nasr.lieandtruth2"
-        minSdkVersion 24
-        targetSdkVersion 34
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        applicationId "com.nasr.lieandtruth2" // Unique application ID
+        minSdkVersion 24 // Minimum SDK version supported
+        targetSdkVersion 34 // Target SDK version
+        versionCode flutterVersionCode.toInteger() // Version code from Flutter
+        versionName flutterVersionName // Version name from Flutter
     }
 
+    // Configure Java compatibility
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    // Configure Kotlin options
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
+    // Add Kotlin source directory to the main source set
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    // Signing configurations for release builds
     signingConfigs {
         release {
-            // Placeholder values
+            // Placeholder values for release signing.
+            // These lines are commented out as they rely on a 'key.properties' file
+            // and should be uncommented and configured when preparing for release.
             // keyAlias keystoreProperties['keyAlias']
             // keyPassword keystoreProperties['keyPassword']
             // storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
@@ -115,20 +69,29 @@ android {
         }
     }
 
+    // Build type configurations
     buildTypes {
         release {
+            // Assign the release signing configuration to the release build type
             signingConfig signingConfigs.release
         }
     }
 }
 
+// Flutter specific configuration block
 flutter {
+    // Point to the root of the Flutter project relative to this build file
     source '../..'
 }
 
+// Dependencies for the application module
 dependencies {
+    // Kotlin standard library for JDK 7
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
+    // Import the Firebase Bill of Materials (BOM) to manage Firebase versions
     implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    // Firebase Analytics library
     implementation 'com.google.firebase:firebase-analytics'
+    // ExoPlayer library for media playback
     implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 }
